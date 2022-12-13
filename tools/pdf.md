@@ -12,3 +12,7 @@ wkhtmltopdf
 4. 把html文件 和 url指向的网页 转换成图片
    * `wkhtmltoimage xxx.html xxx.jpg`
    * `wkhtmltoimage url xxx.jpg`
+
+
+
+`wkhtmltopdf --header-left "Vicky's Notes" --header-right "[date] [time]" --header-line --header-spacing 3 --footer-spacing 3 --footer-center "- 第 [page] 页-" cover cover.url toc --toc-header-text "目录" --disable-dotted-lines main.url D:\\1.pdf`
