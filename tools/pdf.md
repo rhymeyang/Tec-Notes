@@ -16,3 +16,11 @@ wkhtmltopdf
 
 
 `wkhtmltopdf --header-left "Vicky's Notes" --header-right "[date] [time]" --header-line --header-spacing 3 --footer-spacing 3 --footer-center "- 第 [page] 页-" cover cover.url toc --toc-header-text "目录" --disable-dotted-lines main.url D:\\1.pdf`
+
+``
+
+Kindle
+
+```
+wkhtmltopdf  --page-size A6 --margin-left 2 --margin-right 2  --enable-local-file-access  --header-left "  Vicky's Notes" --header-right "[date] [time] A6  "  --header-line --header-spacing 2 --footer-spacing 2 --footer-center "- 第 [page] 页-"    toc --toc-header-text "目录"    url   D:\\local.pdf
+```
