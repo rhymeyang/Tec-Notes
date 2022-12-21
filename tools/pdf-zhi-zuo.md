@@ -1,8 +1,6 @@
-# PDF
+# PDF 制作
 
-## PDF
-
-wkhtmltopdf
+## wkhtmltopdf
 
 * [wkhtmltopdf downloads](https://wkhtmltopdf.org/downloads.html)
 
@@ -172,3 +170,65 @@ https://www.pdflabs.com/docs/pdftk-cli-examples/
 
 
 `wkhtmltopdf --page-size A6 --margin-left 2 --margin-right 2 --enable-local-file-access --header-left " Notes | Kindle" --header-right "[section] " -–header-font-size 6 --header-font-name "Consolas" --header-line --header-spacing 2 --footer-spacing 2 --footer-center "- [page] of [topage] -" --footer-right "[date] [time] " --footer-font-size 6 toc --toc-header-text "目录" url xxx.pdf`
+
+### 格式调整
+
+1、页面的布局主要是table布局在pdf中可能会切断的问题，解决方法：
+
+```html
+tr{page-break-inside: avoid;}
+```
+
+2、利用 page-break-before: left; 让以下三个
+
+将会在生成的pdf中都新开一页。
+
+```html
+<div class="page1" style="page-break-before: left;"></div>
+
+<div class="page2" style="page-break-before: left;"></div>
+
+<div class="page3" style="page-break-before: left;"></div>
+```
+
+3、pdf中还加上了水印，貌似wkhtmltopdf不提供水印方法
+
+切一张水印的图片，比如下面这个：
+
+然后加在这个网页的最外层的父元素上作为背景，然后repeat这个背景，比如：
+
+```html
+<div style="background-image: url('https://backimg.png');background-size: 300px;">
+
+    //网页内容
+
+    //网页内容
+
+    //网页内容
+
+</div>
+```
+
+最后实现了水印的效果，需要提醒一下的是，做水印的时候有可能我们网页的效果和pdf的效果有差距，我调试的时候是遇到了，明明网页上的水印好好的，但是生成了pdf之后 水印的间距会有变差。这个时候，可以把你的网页窗口调整大小，使得你的网页趋紧生成的pdf，再调整水印，这样最后生成的pdf才是准确的，包括前面的提到的封面也可以这么调试（如果有偏差）。
+
+4、如果有图表，看到别人说加上`animation: false;` 禁止动画就可以显示出来了，不然生成的pdf里的图表会是空白。
+
+或者是（我用的方法）：
+
+1、先用 `<div class="js-kline" style="width:700px;height:450px;" v-show="isShow"></div>` 结合echarts生成一个图表。
+
+2、然后调用echarts的getDataURL方法生成一个图片地址放到`<img src="" id="js-img">`
+
+```html
+let echartKLine = echarts.init($('.js-kline'));
+
+    echartKLine.setOption(option);
+
+    window.onresize = echartKLine.resize;
+
+    $("#js-img").attr("src",echartKLine.getDataURL())
+```
+
+最后隐藏 js-kline，显示 js-img。
+
+相当于把图表变成了和这个图表长得一摸一样的图片。
